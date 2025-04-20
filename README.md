@@ -1,4 +1,1 @@
-# Study
-Hello, World!
-
-This is a demo project for learning how to use Git.
+데이터 분석가 심민성 포트폴리오
