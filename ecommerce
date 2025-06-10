@@ -1,1 +1,69 @@
+import pandas as pd
+import numpy as np
+from scipy import stats
 
+# to visualize the data
+import matplotlib.pyplot as plt
+import seaborn as sns
+import plotly.express as px
+
+# To preprocess the data
+from sklearn.preprocessing import StandardScaler, MinMaxScaler, LabelEncoder,OneHotEncoder
+from sklearn.impute import SimpleImputer, KNNImputer
+# import iterative imputer
+from sklearn.experimental import enable_iterative_imputer
+from sklearn.impute import IterativeImputer
+
+# machine learning
+from sklearn.model_selection import train_test_split, GridSearchCV, cross_val_score
+#for classification tasks
+from sklearn.linear_model import LogisticRegression
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier, GradientBoostingClassifier, RandomForestRegressor
+from xgboost import XGBClassifier
+from sklearn.naive_bayes import GaussianNB
+# pipeline
+from sklearn.pipeline import Pipeline
+# metrics
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report, mean_absolute_error,mean_squared_error,r2_score
+
+# ignore warnings   
+import warnings
+warnings.filterwarnings('ignore')
+
+
+import pandas as pd
+
+file_path = "C:/Users/LENOVO/Desktop/WA_Fn-UseC_-Telco-Customer-Churn.csv"
+df = pd.read_csv(file_path)
+pd.set_option('display.max_columns', None)
+print(df.head())
+
+print(df.info())
+
+df['TotalCharges'] = pd.to_numeric(df['TotalCharges'], errors='coerce')
+df.dropna(inplace=True)
+df.drop('customerID', axis=1, inplace=True)
+
+# summary dataset
+df.describe().T
+
+for col in df.columns:
+    if df[col].dtype != 'int64' and df[col].dtype != 'float64':
+        print(f'{col} : {df[col].unique()}')
+
+print(df.isnull().sum())
+
+print(sns.heatmap(df.isnull()))
+
+colors = {'Yes': 'red', 'No': 'blue'}
+
+palette = {0: 'blue', 1: 'red'}
+
+for i, predictor in enumerate(df.drop(columns=['Churn', 'TotalCharges', 'MonthlyCharges', 'tenure'])):
+    plt.figure(i, figsize=(5, 3))
+    sns.countplot(data=df, x=predictor, hue='Churn', palette=colors)
+    plt.title(predictor)
+    plt.show()
